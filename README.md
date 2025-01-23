@@ -10,4 +10,4 @@
 
 4. Base de Datos NoSQL (MongoDB)
 
-![Base de Datos](./images/image1.jpg)
+![Base de Datos](./Unidad1/images/image1.jpg)
