@@ -39,7 +39,15 @@ select *, (UnitPrice * Quantity) as 'Importe' from [Order Details];
 --el cliente que las ordeno y el empleado que las realizo
 
 select * from Orders;
-select OrderDate, year(OrderDate) as 'Año en el que se ordeno', MONTH(OrderDate)as 'Mes en el que se ordeno', day(OrderDate) as 'Dia en el que se ordeno', CustomerID, EmployeeID from Orders;
+select OrderDate, year(OrderDate) as 'Año en el que se ordeno', MONTH(OrderDate)as 'Mes en el que se ordeno', day(OrderDate) as 'Dia en el que se 
+ordeno', CustomerID, EmployeeID from Orders;
+
+
+-- Filas duplicadas
+-- Mostrar los paises donde se tienen los clientes, 
+-- mostrando pais solamente
+
+select distinct Country as 'Paises donde se encuentran clientes' from Customers order by country;
 
 -- Clausula Where (Campo o Columna y lleva; 
 -- Operadores relacionales(>, <, <=, >=, != o <>))
@@ -98,3 +106,58 @@ ShippedDate as 'Fecha de envio',
 CustomerID as 'Client'
 from Orders
 where YEAR(OrderDate) ='1996';
+
+
+-- Test de comparacion
+-- Mostrar todas las ordenes de compra donde la cantidad de productos comprados
+-- sea mayor a 40
+
+select Quantity as 'Cantidad de productos por orden' from [Order Details] where Quantity>40;
+select * from Orders;
+
+-- Mostrar el nombre completo del empleado, su numero de empleado,
+-- Fecha de nacimiento, Ciudad en la que nacio, Fecha de contratacion y 
+-- esta debe ser de aquellos que fueron contratados despues de 1993
+-- Los resultados de sus encabezados deben ser mostrados en español
+
+select * from Employees;
+
+select 
+FirstName as 'Nombre del empleado',
+LastName as 'Apellido del empleado',
+City as 'Ciudad',
+year(BirthDate) as 'Fecha de nacimiento',
+year(HireDate) as 'Fecha de contratacion'
+from Employees 
+where YEAR(HireDate) >'1993';
+
+select 
+(FirstName+ '  ' + LastName) as 'Nombre del empleado',
+City as 'Ciudad',
+year(BirthDate) as 'Fecha de nacimiento',
+year(HireDate) as 'Fecha de contratacion'
+from Employees 
+where YEAR(HireDate) >'1993';
+
+select 
+Concat(FirstName, '  ', LastName) as [Nombre del empleado],
+City as 'Ciudad',
+year(BirthDate) as 'Fecha de nacimiento',
+year(HireDate) as 'Fecha de contratacion'
+from Employees 
+where YEAR(HireDate) >'1993';
+
+-- Mostrar los empleados con los empleados que no son dirigidos por el jefe 2
+-- CCV a un dataframe, diccionarios
+select 
+Concat(FirstName, '  ', LastName) as [Nombre del empleado],
+City as 'Ciudad',
+year(BirthDate) as 'Fecha de nacimiento',
+year(HireDate) as 'Fecha de contratacion'
+from Employees 
+where ReportsTo != 2;
+
+-- Seleccionar los empleados que no tengan jefe
+
+select * from Employees
+where ReportsTo is null;
