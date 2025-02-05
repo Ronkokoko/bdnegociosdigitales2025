@@ -247,3 +247,207 @@ where Freight > 100 and (ShipCountry = 'Brazil' or ShipCountry = 'Argentina') an
 select * from orders
 where Freight > 100 and (ShipCountry = 'Brazil' or ShipCountry = 'Argentina');
 
+-- Seleccionar empleados que no viven en londres o Seattle
+-- y que fueron contratados despues de 1992
+
+select concat(FirstName, '   ',  LastName) as [Nombre Completo],
+HireDate as 'Fecha de contratacion', 
+City as 'Ciudad', 
+Country as 'Pais'
+from Employees
+where City <> 'London' and City <> 'Seattle'
+And year(HireDate) >=1992;
+
+-- Clausula IN (or)
+
+--Seleccionar los productos con categoria 1, 3 o 5
+
+select ProductName as 'Nombre del producto', 
+CategoryID as 'Categoria', 
+UnitPrice as 'Precio'
+from Products
+where CategoryID in (1,3,5);
+
+-- Seleccionar todas las ordenes de la region RJ, Tachira y que
+-- no tengan region asignada
+
+select OrderID as 'Id de la orden',
+OrderDate as 'Fecha de la orden',
+ShipRegion as 'Region de envio'
+from Orders
+where ShipRegion in('RJ','Táchira') or ShipRegion is null;
+
+-- Seleccionar las ordenes que tengan cantidades de 12, 9 y 40
+-- y descuento de 0.15 y 0.5
+
+select OrderID 'Id de orden',
+Quantity 'Cantidad de productos', 
+Discount 'Descuento aplicado' 
+from [Order Details]
+where Quantity in (9,12,40) and Discount in(0.15,0.05);
+
+--CLAUSULA BETWEEN (BUSCAR RANGOS, SIEMPRE VA EN EL WHERE )
+-- BETWEEN valorInicial and valorFinal---
+--mostrar los productos con precio entre 10 y 50 
+select * from Products
+where UnitPrice >=10 and UnitPrice<=50;
+
+select * from Products
+where UnitPrice between 10 and 50;
+
+-- Seleccionar todos los pedidos realizados 
+-- Entre el primero de enero y el 30 de junio de 1997
+
+select OrderDate as 'Fecha de la orden' from orders
+where OrderDate >= '1997-01-01' and OrderDate<= '1997-06-30';
+
+select OrderDate as 'Fecha de la orden' from orders
+where OrderDate between '1997-01-01' and '1997-06-30';
+
+-- Seleccionar todos los empleados contratados entre 
+-- 1992 y 1995 que trabajan en londres
+
+select * from Employees
+where HireDate >= '1992' and HireDate <= '1995' and City = 'London';
+
+select HireDate 
+from Employees
+where City = 'London' and (year(HireDate) between '1992' and '1995');
+
+-- Pedidos com flete (Freight) entre 50 y 200 enviados a alemania
+-- y a francia
+
+select OrderID as 'Numero de Orden',
+OrderDate as 'Fecha de Orden',
+RequiredDate as 'Fecha de Entrega',
+Freight as 'Peso',
+ShipCountry as 'Pais de Entrega'
+from Orders
+where ShipCountry in('France','Germany') and (Freight between 50 and 200);
+
+-- Seleccionar todos los productos que tengan un precio 
+-- entre 5 y 20 dolares o que sean de la categoria 1,2 o 3
+
+select ProductName as 'Nombre del Producto',
+CategoryID as 'Categoria',
+UnitPrice as 'Precio',
+UnitsInStock as 'Existencias'
+from Products
+where UnitPrice >=5 and UnitPrice <= 20 or (CategoryID = 1 or CategoryID = 2 or CategoryID = 3);
+
+select ProductName as 'Nombre del Producto',
+CategoryID as 'Categoria',
+UnitPrice as 'Precio',
+UnitsInStock as 'Existencias'
+from Products
+where (UnitPrice between 5 and 20) or (CategoryID in(1,2,3));
+
+-- Empleados con numero de trabajador entre 3  y 7 
+-- Que no trabajan en Londres ni Seattle
+
+select EmployeeID as 'Numero de trabajador',
+concat(FirstName, '   ',  LastName) as [Nombre del Trabajador],
+City as 'Ciudad'
+from Employees
+where (EmployeeID between 3 and 7) and (City != 'London' and City != 'Seattle');
+
+select EmployeeID as 'Numero de trabajador',
+concat(FirstName, '   ',  LastName) as [Nombre del Trabajador],
+City as 'Ciudad'
+from Employees
+where (EmployeeID between 3 and 7) and not City in ('London','Seattle');
+
+
+-- Clausula Like
+-- Patrones:
+	-- 1) % (Porcentaje) -> Representa cero o mas caracteres en el patron
+	--			de busqueda
+	-- 2) _ (Guion bajo) -> Representa exactamente un caracter en el patron
+	--			de busqueda
+	-- 3) [] (Corchetes) -> Se utiliza para definir un conjunto 
+	--			de caracteres, buscando cualquiera de ellos en la
+	--			posicion fisica
+	-- 4) [^] (Potencia, Acento circunplejo) -> Se utiliza para buscar
+	--			caracteres que no estan dentro del conjunto especifico
+
+-- Buscar los productos que empiezan con (Cha)
+
+Select ProductName as 'Nombre del producto',
+CategoryID as 'Categoria',
+UnitPrice as 'Precio',
+UnitsInStock as 'Existencias'
+from Products
+where ProductName like 'Cha%' and UnitPrice = 18;
+
+-- Buscar todos los productos que terminen con (E)
+
+
+Select ProductName as 'Nombre del producto',
+CategoryID as 'Categoria',
+UnitPrice as 'Precio',
+UnitsInStock as 'Existencias'
+from Products
+where ProductName like '%e';
+
+-- Seleccionar todos los clientes cuyo nombre de empresa
+-- Contiene la palabra "co" en cualquier parte
+
+select CompanyName as 'Nombre de la compañia' from Customers
+where CompanyName like '%co%';
+
+-- Seleccionar los empleados cuyo nombre comience con "A"
+-- y tenga exactamente 5 caracteres
+
+select EmployeeID as 'Numero de trabajador',
+concat(FirstName, '   ',  LastName) as [Nombre del Trabajador],
+City as 'Ciudad'
+from Employees
+where FirstName like 'A_____';
+
+
+
+-- Seleccionar los productos que comiencen con 'A' o 'B'
+
+select * 
+from Products
+where ProductName like '[AB]%';
+
+select * from Products
+where ProductName like '[A-M]%';
+
+-- Seleccionar todos los productos que no comiencen con A o B
+
+select * 
+from Products
+where ProductName like '[^AB]%';
+
+-- Seleccionar todos los productos donde el nombre 
+-- que comience con a pero no contenga la e
+
+select * 
+from Products
+where ProductName like 'A[^E]%';
+
+-- Clausula Order By
+
+select ProductID as 'Codigo del Producto',
+ProductName as 'Nombre del Producto',
+UnitPrice as 'Precio',
+UnitsInStock as 'Existencias'
+from Products
+order by 'Precio' desc;
+
+
+-- Seleccionar los clientes ordenados por el pais y dentro
+-- Por ciudad
+
+select * from Customers;
+
+select CustomerID as 'Id del Cliente',
+ContactName as 'Nombre de contacto',
+Country as 'Pais', 
+City as 'Ciudad',
+Region as 'Region'
+from Customers
+where Country in( 'Brazil', 'Germany') and Region is not null
+order by Country asc, City desc;
