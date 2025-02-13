@@ -451,3 +451,86 @@ Region as 'Region'
 from Customers
 where Country in( 'Brazil', 'Germany') and Region is not null
 order by Country asc, City desc;
+
+
+-- Seleccionar todos las categorias y productos
+-- 
+-- Version con todo
+select * from 
+Categories
+inner join
+Products 
+on Categories.CategoryID = Products.CategoryID
+;
+
+-- Version con filtro
+select 
+Categories.CategoryID, 
+CategoryName, 
+ProductName,
+UnitsInStock, 
+UnitPrice
+from 
+Categories
+inner join
+Products 
+on Categories.CategoryID = Products.CategoryID
+;
+
+-- Version con alias en las tablas
+select 
+c.CategoryID as 'Id de Categorias', 
+CategoryName as 'Nombre de la categoria', 
+ProductName as 'Nombre del producto',
+UnitsInStock as 'Existencias', 
+UnitPrice as 'Precio'
+from 
+Categories as c
+inner join
+Products as p
+on c.CategoryID = p.CategoryID;
+
+-- Seleccionar los productos de la categoria
+-- Beverages y Condiments donde la existencia este entre 18 y 30
+
+select 
+c.CategoryID as 'Id de Categorias', 
+CategoryName as 'Nombre de la categoria', 
+ProductName as 'Nombre del producto',
+UnitsInStock as 'Existencias', 
+UnitPrice as 'Precio'
+from 
+Categories as c
+inner join
+Products as p
+on c.CategoryID = p.CategoryID
+where c.CategoryID in(1, 2) and UnitsInStock between 18 and 30;
+
+-- Seleccionar los productos y sus importes realozados de marzo a junio 
+-- de 1996, mostrando la fecha de la orden, el id del producto y el importe
+
+select * from Orders
+
+select GETDATE();
+select 
+o.OrderID as 'Id de la orden',
+OrderDate as 'Fecha de la orden',
+ProductID as 'Id del producto',
+(od.UnitPrice * od.Quantity) as 'Importe'
+from 
+Orders as o
+inner join 
+[Order Details] as od
+on o.OrderID = od.OrderID
+where OrderDate between '1996-07-01' and '1996-10-31';
+
+-- Mostrar el importe total de ventas de la consulta anterior
+
+select 
+concat('$', '  ',sum(od.UnitPrice * od.Quantity)) as 'Importe'
+from 
+Orders as o
+inner join 
+[Order Details] as od
+on o.OrderID = od.OrderID
+where OrderDate between '1996-07-01' and '1996-10-31';
