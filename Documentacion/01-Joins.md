@@ -1,6 +1,6 @@
 # Inner Joins
 
-![Diagrama Resultante](../Imgs/img_inner_join.png)
+![Diagrama Resultante](../Unidad2//Imgs/img_inner_join.png)
 
 -- Lenguaje SQL-LMD (Insert, Update, Delete, Select - CRUD)
 -- Consultas Simples
